@@ -1,0 +1,34 @@
+/* #app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+} */
+@import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css');
+:root {
+  --offcanva-width: 260px;
+  --topNavHeight: 56px;
+}
+.offcanvas-start {
+  width: var(--offcanva-width) !important;
+}
+
+@media (min-width: 992px) {
+  body {
+    overflow: auto !important;
+  }
+  .offcanvas-backdrop::before {
+    display: none;
+  }
+  .offcanvas-start {
+    transform: none !important;
+    visibility: visible !important;
+    top: var(--topNavHeight) !important;
+    height: calc(100% - var(--topNavHeight)) !important;
+  }
+  main {
+    margin-left: var(--offcanva-width);
+  }
+}
