@@ -10,10 +10,6 @@
 .sidebar-link[aria-expanded='true'] .right-icon {
   transform: rotate(180deg);
 }
-.router-link-active {
-  color: white;
-  font-weight: bold;
-}
 </style>
 <template>
   <div
@@ -49,6 +45,7 @@
               role="button"
               aria-expanded="false"
               aria-controls="collapseExample"
+              :class="{ active: isActive('/tabungan') }"
             >
               <span class="me-2">
                 <i class="bi bi-layout-split"></i>
@@ -62,7 +59,7 @@
               <div>
                 <ul class="navbar-nav ps-4">
                   <li>
-                    <router-link to="/deposit" class="nav-link px-3">
+                    <router-link to="/tabungan/deposit" class="nav-link px-3">
                       <span>Deposit</span>
                     </router-link>
                   </li>
@@ -78,5 +75,13 @@
 <script>
 export default {
   name: 'Sidebar',
+  methods: {
+    isActive(input) {
+      const paths = Array.isArray(input) ? input : [input]
+      return paths.some((path) => {
+        return this.$route.path.indexOf(path) === 0 // current path starts with this path string
+      })
+    },
+  },
 }
 </script>
