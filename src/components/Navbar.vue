@@ -80,6 +80,7 @@ export default {
         })
         .then((res) => {
           localStorage.setItem("token", null);
+          localStorage.setItem("isLoggedIn", false);
           this.$router.push("/");
         })
         .catch((e) => console.error(e));

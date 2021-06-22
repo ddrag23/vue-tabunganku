@@ -16,6 +16,9 @@
               <div class="col-12">
                 <h3 class="text-center">Login</h3>
               </div>
+              <div v-if="invalidUser" class="alert alert-danger" role="alert">
+                {{ invalidUser }}
+              </div>
               <div class="mb-3 col-12">
                 <label class="form-label" for="username">Username</label>
                 <input
@@ -25,6 +28,11 @@
                   id="username"
                   v-model="data.username"
                 />
+                <div v-if="validate.errors.username">
+                  <small class="text-danger">
+                    {{ validate.errors.username[0] }}
+                  </small>
+                </div>
               </div>
               <div class="mb-3 col-12">
                 <label for="password" class="form-label">Password</label>
@@ -35,6 +43,11 @@
                   id="password"
                   v-model="data.password"
                 />
+                <div v-if="validate.errors.password">
+                  <small class="text-danger">
+                    {{ validate.errors.password[0] }}
+                  </small>
+                </div>
               </div>
             </div>
             <div class="d-grid mt-3">
@@ -49,7 +62,7 @@
   </div>
 </template>
 <script>
-import { reactive, ref } from "vue";
+import { reactive, ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
 export default {
@@ -59,6 +72,10 @@ export default {
       username: "",
       password: "",
     });
+    const validate = reactive({
+      errors: "",
+    });
+    const invalidUser = ref("");
     const submit = () => {
       axios
         .get("/sanctum/csrf-cookie")
@@ -70,17 +87,34 @@ export default {
               password: data.password,
             })
             .then((res) => {
-              console.log(res.data.errors.username);
-              // localStorage.setItem("token", res.data.token);
-              // router.push("/home");
+              console.log(res);
+              if (res.data.success) {
+                localStorage.setItem("token", res.data.token);
+                localStorage.setItem("isLoggedIn", true);
+                router.push("/home");
+              } else {
+                if (res.data.errors !== undefined) {
+                  invalidUser.value = res.data.message;
+                  validate.errors = res.data.errors;
+                } else {
+                  invalidUser.value = res.data.message;
+                }
+              }
             })
             .catch((e) => console.error(e));
         })
         .catch((e) => console.error(e));
     };
+    onMounted(() => {
+      if (localStorage.getItem("isLoggedIn") === "true") {
+        return router.push("/home");
+      }
+    });
     return {
       data,
       submit,
+      validate,
+      invalidUser,
     };
   },
 };
