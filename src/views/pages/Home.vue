@@ -1,18 +1,25 @@
 <template>
-  <h4>Ini halaman home</h4>
-  <div class="card">
-    <div class="card-header">
-      <div class="card-title">OK</div>
-    </div>
-    <div class="card-body">
-      <div class="row">
-        <div class="col-12 form-group">
-          <input type="text" class="form-control" />
+  <layout>
+    <h4>Ini halaman home</h4>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">OK</div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 form-group">
+            <input type="text" class="form-control" />
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </layout>
 </template>
 <script>
-export default {}
+import Layout from "./Layout.vue";
+export default {
+  components: {
+    Layout,
+  },
+};
 </script>

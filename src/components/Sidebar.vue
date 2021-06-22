@@ -7,7 +7,7 @@
   display: inline-flex;
   transition: all ease 0.25s;
 }
-.sidebar-link[aria-expanded='true'] .right-icon {
+.sidebar-link[aria-expanded="true"] .right-icon {
   transform: rotate(180deg);
 }
 </style>
@@ -22,12 +22,10 @@
       <nav class="navbar-dark">
         <ul class="navbar-nav">
           <li>
-            <div class="text-muted small fw-bold text-uppercase px-3">
-              Core
-            </div>
+            <div class="text-muted small fw-bold text-uppercase px-3">Core</div>
           </li>
           <li>
-            <router-link to="/" class="nav-link px-3">
+            <router-link :to="{ name: 'Home' }" class="nav-link px-3">
               <span class="me-2">
                 <i class="bi bi-speedometer2"></i>
               </span>
@@ -74,14 +72,14 @@
 </template>
 <script>
 export default {
-  name: 'Sidebar',
+  name: "Sidebar",
   methods: {
     isActive(input) {
-      const paths = Array.isArray(input) ? input : [input]
+      const paths = Array.isArray(input) ? input : [input];
       return paths.some((path) => {
-        return this.$route.path.indexOf(path) === 0 // current path starts with this path string
-      })
+        return this.$route.path.indexOf(path) === 0; // current path starts with this path string
+      });
     },
   },
-}
+};
 </script>

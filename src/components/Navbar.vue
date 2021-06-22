@@ -10,7 +10,7 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <a class="navbar-brand me-auto" to="/">Navbar</a>
+      <a class="navbar-brand me-auto" :to="{ name: 'Home' }">Navbar</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -42,7 +42,14 @@
               <li><a class="dropdown-item" href="#">Action</a></li>
               <li><a class="dropdown-item" href="#">Another action</a></li>
               <li><hr class="dropdown-divider" /></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  @click="logout"
+                  href="javascript:void(0)"
+                  >logout</a
+                >
+              </li>
             </ul>
           </li>
         </ul>
@@ -52,11 +59,31 @@
   <sidebar></sidebar>
 </template>
 <script>
-import Sidebar from './Sidebar.vue'
+import Sidebar from "./Sidebar.vue";
+import axios from "axios";
 export default {
-  name: 'Navbar',
+  data() {
+    return {
+      token: localStorage.getItem("token"),
+    };
+  },
+  name: "Navbar",
   components: {
     Sidebar,
   },
-}
+  methods: {
+    logout() {
+      console.log(this.token);
+      axios
+        .get("/api/logout", {
+          headers: { Authorization: "Bearer " + this.token },
+        })
+        .then((res) => {
+          localStorage.setItem("token", null);
+          this.$router.push("/");
+        })
+        .catch((e) => console.error(e));
+    },
+  },
+};
 </script>

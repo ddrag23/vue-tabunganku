@@ -2,10 +2,19 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/pages/Home.vue'
 import Deposit from '../views/pages/tabungan/Deposit.vue'
 import PageNotFound from '../views/errors/NotFound.vue'
+import Login from '../views/pages/auth/Login.vue'
 
 const routes = [
   {
     path: '/',
+    name: 'Login',
+    component: Login,
+    meta: {
+      title: 'Login',
+    },
+  },
+  {
+    path: '/home',
     name: 'Home',
     component: Home,
     meta: {

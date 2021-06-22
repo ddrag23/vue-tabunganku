@@ -1,8 +1,14 @@
 <template>
-  <h3>ini halaman deposit</h3>
+  <layout>
+    <h3>ini halaman deposit</h3>
+  </layout>
 </template>
 <script>
+import Layout from "../Layout.vue";
 export default {
-  name: 'Deposit',
-}
+  name: "Deposit",
+  components: {
+    Layout,
+  },
+};
 </script>
