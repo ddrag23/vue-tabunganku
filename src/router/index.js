@@ -3,14 +3,16 @@ import Home from '../views/pages/Home.vue'
 import Deposit from '../views/pages/tabungan/Deposit.vue'
 import PageNotFound from '../views/errors/NotFound.vue'
 import Login from '../views/pages/auth/Login.vue'
+import Unauthorized from '../views/errors/Unauthorized.vue'
 
 const routes = [
   {
     path: '/',
-    name: 'Login',
+    name: 'login',
     component: Login,
     meta: {
       title: 'Login',
+      requiredAuth : false,
     },
   },
   {
@@ -19,6 +21,7 @@ const routes = [
     component: Home,
     meta: {
       title: 'Home',
+      requiredAuth : true,
     },
   },
   {
@@ -27,6 +30,15 @@ const routes = [
     component: Deposit,
     meta: {
       title: 'Deposit',
+      requiredAuth : true,
+    },
+  },
+  {
+    path: '/unauthorized',
+    name: 'unauthorized',
+    component: Unauthorized,
+    meta: {
+      title: '403 bos',
     },
   },
   {
@@ -46,5 +58,17 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   document.title = `${to.meta.title}`
   next()
+})
+router.beforeEach((to,from, next) => {
+  if (to.meta.requiredAuth) {
+      const token = localStorage.getItem('token')
+    if (!token) {
+      next({name:'login'})
+    }else{
+      next()
+    }
+  }else{
+    next()
+  }
 })
 export default router

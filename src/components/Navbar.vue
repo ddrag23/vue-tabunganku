@@ -73,17 +73,7 @@ export default {
   },
   methods: {
     logout() {
-      console.log(this.token);
-      axios
-        .get("/api/logout", {
-          headers: { Authorization: "Bearer " + this.token },
-        })
-        .then((res) => {
-          localStorage.setItem("token", null);
-          localStorage.setItem("isLoggedIn", false);
-          this.$router.push("/");
-        })
-        .catch((e) => console.error(e));
+      this.$store.dispatch("auth/handleLogout", this.token);
     },
   },
 };

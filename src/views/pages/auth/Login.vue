@@ -28,9 +28,9 @@
                   id="username"
                   v-model="data.username"
                 />
-                <div v-if="validate.errors.username">
+                <div v-if="validate.username">
                   <small class="text-danger">
-                    {{ validate.errors.username[0] }}
+                    {{ validate.username[0] }}
                   </small>
                 </div>
               </div>
@@ -43,9 +43,9 @@
                   id="password"
                   v-model="data.password"
                 />
-                <div v-if="validate.errors.password">
+                <div v-if="validate.password">
                   <small class="text-danger">
-                    {{ validate.errors.password[0] }}
+                    {{ validate.password[0] }}
                   </small>
                 </div>
               </div>
@@ -62,48 +62,23 @@
   </div>
 </template>
 <script>
-import { reactive, ref, onMounted } from "vue";
+import { reactive, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
-import axios from "axios";
+import { useStore } from "vuex";
 export default {
   setup() {
     const router = useRouter();
+    const store = useStore();
     const data = reactive({
       username: "",
       password: "",
     });
-    const validate = reactive({
-      errors: "",
-    });
-    const invalidUser = ref("");
+    const validate = computed(() => store.getters["auth/getValidate"]);
+    const invalidUser = computed(() => store.getters["auth/getInvalidUser"]);
+    const user = computed(() => store.state.auth.user);
     const submit = () => {
-      axios
-        .get("/sanctum/csrf-cookie")
-        .then((res) => {
-          console.log(res);
-          axios
-            .post("/api/login", {
-              username: data.username,
-              password: data.password,
-            })
-            .then((res) => {
-              console.log(res);
-              if (res.data.success) {
-                localStorage.setItem("token", res.data.token);
-                localStorage.setItem("isLoggedIn", true);
-                router.push("/home");
-              } else {
-                if (res.data.errors !== undefined) {
-                  invalidUser.value = res.data.message;
-                  validate.errors = res.data.errors;
-                } else {
-                  invalidUser.value = res.data.message;
-                }
-              }
-            })
-            .catch((e) => console.error(e));
-        })
-        .catch((e) => console.error(e));
+      store.dispatch("auth/handleLogin", data);
+      // router.push({ name: "Home" });
     };
     onMounted(() => {
       if (localStorage.getItem("isLoggedIn") === "true") {
