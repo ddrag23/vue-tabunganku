@@ -39,7 +39,7 @@ const routes = [
     name: 'savings',
     component: Savings,
     meta: {
-      title: 'Deposit',
+      title: 'Tabungan',
       requiredAuth : true,
     },
   },
