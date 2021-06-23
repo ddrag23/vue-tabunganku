@@ -40,8 +40,7 @@ export default {
                 localStorage.setItem("token", res.data.token);
                 localStorage.setItem("isLoggedIn", true);
                 commit('setUser',res.data.data)
-                // window.location.replace('/home');
-                route.push({name:'Home'})
+                router.push({name:'Home'})
               } else {
                 if (res.data.errors !== undefined) {
                     commit('setValidate',res.data.errors)
@@ -68,7 +67,6 @@ export default {
         .catch((e) => {
           localStorage.clear();
           router.push({name: 'login'});
-          // this.$router.push({ name: "unauthorized" });
           console.error(e);
         });
         }

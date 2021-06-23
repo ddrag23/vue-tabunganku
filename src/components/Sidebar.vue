@@ -57,8 +57,19 @@
               <div>
                 <ul class="navbar-nav ps-4">
                   <li>
-                    <router-link to="/tabungan/deposit" class="nav-link px-3">
+                    <router-link
+                      :to="{ name: 'Deposit' }"
+                      class="nav-link px-3"
+                    >
                       <span>Deposit</span>
+                    </router-link>
+                  </li>
+                  <li>
+                    <router-link
+                      :to="{ name: 'savings' }"
+                      class="nav-link px-3"
+                    >
+                      <span>Tabungan</span>
                     </router-link>
                   </li>
                 </ul>

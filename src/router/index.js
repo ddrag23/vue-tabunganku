@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/pages/Home.vue'
 import Deposit from '../views/pages/tabungan/Deposit.vue'
+import Savings from '../views/pages/tabungan/Savings.vue'
 import PageNotFound from '../views/errors/NotFound.vue'
 import Login from '../views/pages/auth/Login.vue'
 import Unauthorized from '../views/errors/Unauthorized.vue'
@@ -28,6 +29,15 @@ const routes = [
     path: '/tabungan/deposit',
     name: 'Deposit',
     component: Deposit,
+    meta: {
+      title: 'Deposit',
+      requiredAuth : true,
+    },
+  },
+  {
+    path: '/tabungan/savings',
+    name: 'savings',
+    component: Savings,
     meta: {
       title: 'Deposit',
       requiredAuth : true,
