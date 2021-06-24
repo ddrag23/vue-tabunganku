@@ -22,6 +22,18 @@
             </div>
           </template>
           <template v-slot:card-body>
+            <div class="row">
+              <div class="col-12 mb-3">
+                <input
+                  type="text"
+                  name="search"
+                  id="search"
+                  class="form-control"
+                  placeholder="Search"
+                  @keyup="searchData"
+                />
+              </div>
+            </div>
             <div class="table-responsive">
               <vue-table>
                 <template v-slot:thead>
@@ -33,8 +45,10 @@
                   </tr>
                 </template>
                 <template v-slot:tbody>
-                  <tr v-for="item in data.data" :key="item.id">
-                    <td>{{ item.id }}</td>
+                  <tr v-for="(item, index) in data.data" :key="item.id">
+                    <td>
+                      {{ (data.current_page - 1) * data.per_page + index + 1 }}
+                    </td>
                     <td>{{ item.user.name }}</td>
                     <td>{{ item.saldo }}</td>
                     <td>
@@ -45,6 +59,10 @@
                   </tr>
                 </template>
               </vue-table>
+              <vue-pagination
+                :paginate="data"
+                v-on:pagination="getData"
+              ></vue-pagination>
             </div>
           </template>
         </card>
@@ -56,6 +74,7 @@
 import Layout from "../Layout.vue";
 import VueTable from "../../../components/Table.vue";
 import Card from "../../../components/Card.vue";
+import VuePagination from "../../..//components/VuePagination.vue";
 import { onMounted, computed } from "vue";
 import { useStore } from "vuex";
 export default {
@@ -64,15 +83,19 @@ export default {
     Layout,
     VueTable,
     Card,
+    VuePagination,
   },
   setup() {
     const store = useStore();
-    // const data = computed(() => store.getters["savings/getData"]);
-    const data = computed(() => store.state.savings.data);
+    const data = computed(() => store.getters["savings/getData"]);
+    const getData = (page = 1) => {
+      store.dispatch("savings/handleGetData", page);
+    };
+    const searchData = (e) => store.dispatch("savings/coba", e.target.value);
     onMounted(() => {
-      store.dispatch("savings/handleGetData");
+      getData();
     });
-    return { data };
+    return { data, getData, searchData };
   },
 };
 </script>

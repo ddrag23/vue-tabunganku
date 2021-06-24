@@ -75,8 +75,7 @@ export default {
     });
     const validate = computed(() => store.getters["auth/getValidate"]);
     const invalidUser = computed(() => store.getters["auth/getInvalidUser"]);
-    const user = computed(() => store.state.auth.user);
-    console.log(validate);
+    // console.log(validate);
     const submit = () => {
       store.dispatch("auth/handleLogin", data);
       // router.push({ name: "Home" });

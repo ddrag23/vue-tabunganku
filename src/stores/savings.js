@@ -1,32 +1,60 @@
-import axios from "axios";
+import axios from 'axios'
 import router from '../router'
 
 export default {
-    namespaced:true,
-    state : {
-        data :{},
-        formData : {}
+  namespaced: true,
+  state: {
+    data: [],
+    formData: {},
+    search: '',
+  },
+  getters: {
+    getData: (state) => state.data,
+    getSearch: (state) => state.search,
+  },
+  mutations: {
+    setData(state, value) {
+      state.data = value
     },
-    getters : {
-        getData : (state) => state.data
+    setSearch(state, value) {
+      state.search = value
     },
-    mutations :{
-        setData(state,value){
-            state.data = value
-        }
+  },
+  actions: {
+    async handleGetData({ getters, commit }, page) {
+      try {
+        const url = `/api/savings?page=${page}&search=${getters.getSearch}`
+        console.log(url)
+        const res = await axios.get(url, {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token'),
+          },
+        })
+        const data = res.data.data
+        commit('setData', data)
+      } catch (error) {
+        console.error(error)
+      }
     },
-    actions :{
-        async handleGetData({commit}){
-            try {
-                const res = await axios.get("/api/savings", {
-                    headers: { Authorization: "Bearer " + localStorage.getItem('token') },
-                  })
-                  const data = res.data.data
-                  console.log(data)
-                  commit('setData',data)
-            } catch (error) {
-                console.error(error)
-            }
-        }
-    }
+    coba({ commit }, param) {
+      //   console.log(param)
+      commit('setSearch', param)
+    },
+    async handleSearchData({ commit }, search) {
+      try {
+        const url = `/api/savings?search=${search}`
+        console.log(url)
+        const res = await axios.get(url, {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token'),
+          },
+        })
+        const data = res.data.data
+        // console.log(data)
+        commit('setData', data)
+      } catch (error) {
+        console.error(error)
+      }
+    },
+  },
 }

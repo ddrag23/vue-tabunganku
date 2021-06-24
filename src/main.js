@@ -4,7 +4,7 @@ import router from './router'
 import './index.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap'
-import {store} from './stores'
+import { store } from './stores'
 import axios from 'axios'
 // import 'es6-promise/auto'
 
