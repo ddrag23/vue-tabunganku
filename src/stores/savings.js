@@ -21,9 +21,9 @@ export default {
     },
   },
   actions: {
-    async handleGetData({ getters, commit }, page) {
+    async handleGetData({ getters, commit }, { page, search }) {
       try {
-        const url = `/api/savings?page=${page}&search=${getters.getSearch}`
+        const url = `/api/savings?page=${page}&search=${search}`
         console.log(url)
         const res = await axios.get(url, {
           headers: {

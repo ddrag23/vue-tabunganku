@@ -88,10 +88,10 @@ export default {
   setup() {
     const store = useStore();
     const data = computed(() => store.getters["savings/getData"]);
-    const getData = (page = 1) => {
-      store.dispatch("savings/handleGetData", page);
+    const getData = (page = 1, search = "") => {
+      store.dispatch("savings/handleGetData", { page, search });
     };
-    const searchData = (e) => store.dispatch("savings/coba", e.target.value);
+    const searchData = (e) => getData(1, e.target.value);
     onMounted(() => {
       getData();
     });
