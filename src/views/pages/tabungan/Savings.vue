@@ -12,13 +12,8 @@
       <div class="col-12">
         <card>
           <template v-slot:card-header>
-            <div class="card-header">
-              <div class="d-flex justify-content-between">
-                <h5 class="card-title">Tabel Tabungan</h5>
-                <button class="btn btn-primary">
-                  <i class="bi bi-plus-lg"></i> Tambah
-                </button>
-              </div>
+            <div class="card-header bg-white card-outline-primary">
+              <h5 class="card-title">Tabel Tabungan</h5>
             </div>
           </template>
           <template v-slot:card-body>
@@ -52,8 +47,11 @@
                     <td>{{ item.user.name }}</td>
                     <td>{{ item.saldo }}</td>
                     <td>
-                      <button class="btn btn-info btn-sm">
-                        <i class="bi bi-eye"></i>
+                      <button
+                        class="btn btn-danger btn-sm"
+                        @click="deleteData(item.id)"
+                      >
+                        <i class="bi bi-trash"></i>
                       </button>
                     </td>
                   </tr>
@@ -72,10 +70,10 @@
 </template>
 <script>
 import Layout from "../Layout.vue";
-import VueTable from "../../../components/Table.vue";
-import Card from "../../../components/Card.vue";
-import VuePagination from "../../..//components/VuePagination.vue";
-import { onMounted, computed } from "vue";
+import VueTable from "@/components/Table.vue";
+import Card from "@/components/Card.vue";
+import VuePagination from "@//components/VuePagination.vue";
+import { onMounted, computed, watchEffect } from "vue";
 import { useStore } from "vuex";
 export default {
   name: "Savings",
@@ -91,11 +89,15 @@ export default {
     const getData = (page = 1, search = "") => {
       store.dispatch("savings/handleGetData", { page, search });
     };
+    const deleteData = (id) => store.dispatch("savings/handleDelete", id);
     const searchData = (e) => getData(1, e.target.value);
+    watchEffect(() => {
+      getData();
+    });
     onMounted(() => {
       getData();
     });
-    return { data, getData, searchData };
+    return { data, getData, searchData, deleteData };
   },
 };
 </script>

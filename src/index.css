@@ -14,6 +14,9 @@
 .offcanvas-start {
   width: var(--offcanva-width) !important;
 }
+.card-outline-primary {
+  border-top: 1px solid blue;
+}
 
 @media (min-width: 992px) {
   body {
