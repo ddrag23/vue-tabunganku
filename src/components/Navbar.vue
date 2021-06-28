@@ -39,8 +39,14 @@
               class="dropdown-menu dropdown-menu-end"
               aria-labelledby="navbarDropdown"
             >
-              <li><a class="dropdown-item" href="#">Profile</a></li>
-              <li><a class="dropdown-item" href="#">Change Password</a></li>
+              <li>
+                <router-link class="dropdown-item" :to="{ name: 'profile' }"
+                  >Profile</router-link
+                >
+              </li>
+              <li>
+                <a class="dropdown-item">Change Password</a>
+              </li>
               <li><hr class="dropdown-divider" /></li>
               <li>
                 <a

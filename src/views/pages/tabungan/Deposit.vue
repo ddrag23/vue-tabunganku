@@ -100,7 +100,7 @@
                   </tr>
                 </template>
                 <template v-slot:tbody>
-                  <tr v-if="data.data.lenght < 0">
+                  <tr v-if="data.data === undefined">
                     <td colspan="4" class="text-center">Belum ada data</td>
                   </tr>
                   <tr v-else v-for="(item, index) in data.data" :key="item.id">

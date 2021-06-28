@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/pages/Home.vue'
 import Deposit from '../views/pages/tabungan/Deposit.vue'
 import Withdraw from '@/views/pages/tabungan/Withdraw.vue'
+import Profile from '@/views/pages/auth/Profile.vue'
 import Savings from '../views/pages/tabungan/Savings.vue'
 import PageNotFound from '../views/errors/NotFound.vue'
 import Login from '../views/pages/auth/Login.vue'
@@ -50,6 +51,15 @@ const routes = [
     component: Savings,
     meta: {
       title: 'Tabungan',
+      requiredAuth: true,
+    },
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: Profile,
+    meta: {
+      title: 'Profile',
       requiredAuth: true,
     },
   },
