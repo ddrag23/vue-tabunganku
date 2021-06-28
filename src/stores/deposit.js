@@ -6,14 +6,19 @@ export default {
   namespaced: true,
   state: {
     data: [],
+    users: [],
+    validate: {},
   },
   getters: {
     getData: (state) => state.data,
+    getValidate: (state) => state.validate,
   },
   mutations: {
     SET_DATA(state, value) {
       state.data = value
     },
+    SET_USERS: (state, value) => (state.users = value),
+    SET_VALIDATE: (state, value) => (state.validate = value),
   },
   actions: {
     async handleGetData({ commit }, { page, search }) {
@@ -22,6 +27,33 @@ export default {
         const res = await axios.get(url)
         const data = res.data.data
         commit('SET_DATA', data)
+      } catch (error) {
+        console.error(error)
+      }
+    },
+    async handleUsers({ commit }) {
+      try {
+        const url = '/api/user/all'
+        const res = await axios.get(url)
+        const data = await res.data
+        commit('SET_USERS', data)
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async handleSave({ commit }, formData) {
+      try {
+        const url = '/api/deposit/save'
+        const res = await axios.post(url, formData)
+        const data = await res.data
+        if (data.success) {
+          Swal.fire(data.message, '', 'success')
+          commit('SET_VALIDATE', {})
+        } else {
+          Swal.fire(data.message, '', 'warning')
+          console.log(data.data)
+          commit('SET_VALIDATE', data.data)
+        }
       } catch (error) {
         console.error(error)
       }
