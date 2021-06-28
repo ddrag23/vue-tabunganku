@@ -1,74 +1,71 @@
-import axios from "axios";
+import axios from 'axios'
 import router from '../router'
 
 export default {
-    namespaced :true,
-    state :{
-        user : {},
-        validate : {},
-        invalidUser: ""
+  namespaced: true,
+  state: {
+    user: {},
+    validate: {},
+    invalidUser: '',
+  },
+  getters: {
+    getValidate: (state) => state.validate,
+    getInvalidUser: (state) => state.invalidUser,
+  },
+  mutations: {
+    setUser(state, value) {
+      state.user = value
     },
-    getters :{
-        getValidate : (state) => state.validate,
-        getInvalidUser : (state) => state.invalidUser
+    setValidate(state, value) {
+      state.validate = value
     },
-    mutations :{
-        setUser(state,value){
-            state.user = value
-        },
-        setValidate(state,value){
-            state.validate = value
-        },
-        setInvalidUser(state,value){
-            state.invalidUser = value
-        }
+    setInvalidUser(state, value) {
+      state.invalidUser = value
     },
-    actions:{
-        handleLogin({commit},user){
-            axios
-        .get("/sanctum/csrf-cookie")
+  },
+  actions: {
+    handleLogin({ commit }, user) {
+      axios
+        .get('/sanctum/csrf-cookie')
         .then((res) => {
-          console.log(res);
+          console.log(res)
           axios
-            .post("/api/login", {
+            .post('/api/login', {
               username: user.username,
               password: user.password,
             })
             .then((res) => {
-            //   console.log(res);
+              //   console.log(res);
               if (res.data.success) {
-                localStorage.setItem("token", res.data.token);
-                localStorage.setItem("isLoggedIn", true);
-                commit('setUser',res.data.data)
-                router.push({name:'Home'})
+                localStorage.setItem('token', res.data.token)
+                localStorage.setItem('isLoggedIn', true)
+                commit('setUser', res.data.data)
+                router.push({ name: 'Home' })
               } else {
                 if (res.data.errors !== undefined) {
-                    commit('setValidate',res.data.errors)
-                    commit('setInvalidUser',res.data.message)
+                  commit('setValidate', res.data.errors)
+                  commit('setInvalidUser', res.data.message)
                 } else {
-                    commit('setInvalidUser',res.data.message)
-                    
+                  commit('setInvalidUser', res.data.message)
                 }
               }
             })
-            .catch((e) => console.error(e));
+            .catch((e) => console.error(e))
         })
-        .catch((e) => console.error(e));
-        },
-        handleLogout({}, token){
-            axios
-        .get("/api/logout", {
-          headers: { Authorization: "Bearer " + token },
-        })
+        .catch((e) => console.error(e))
+    },
+    handleLogout({}) {
+      axios
+        .get('/api/logout')
         .then((res) => {
-          localStorage.clear();
-          router.push({name: 'login'});
+          localStorage.clear()
+          router.push({ name: 'login' })
         })
         .catch((e) => {
-          localStorage.clear();
-          router.push({name: 'login'});
-          console.error(e);
-        });
-        }
-    }
+          localStorage.clear()
+          router.push({ name: 'login' })
+          console.error(e)
+        })
+    },
+  },
 }

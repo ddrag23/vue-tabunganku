@@ -58,6 +58,14 @@
                 <ul class="navbar-nav ps-4">
                   <li>
                     <router-link
+                      :to="{ name: 'withdraw' }"
+                      class="nav-link px-3"
+                    >
+                      <span>Withdraw</span>
+                    </router-link>
+                  </li>
+                  <li>
+                    <router-link
                       :to="{ name: 'Deposit' }"
                       class="nav-link px-3"
                     >

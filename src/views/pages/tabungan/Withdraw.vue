@@ -6,7 +6,7 @@
 <template>
   <layout>
     <div class="title">
-      <h3>Deposit</h3>
+      <h3>Withdraw</h3>
     </div>
     <div class="row">
       <div class="col-12 mb-2">
@@ -14,7 +14,7 @@
           <card>
             <template v-slot:card-header>
               <div class="card-header bg-white card-outline-primary">
-                <h5 class="card-title">Form Deposit</h5>
+                <h5 class="card-title">Form Withdraw</h5>
               </div>
             </template>
             <template v-slot:card-body>
@@ -68,7 +68,7 @@
           <template v-slot:card-header>
             <div class="card-header bg-white card-outline-primary">
               <div class="d-flex justify-content-between">
-                <h5 class="card-title">Table Deposit</h5>
+                <h5 class="card-title">Table Withdraw</h5>
                 <button class="btn btn-primary">
                   <i class="bi bi-plus-lg"></i>
                   Tambah
@@ -139,7 +139,7 @@ import VuePagination from "@/components/VuePagination.vue";
 import { onMounted, computed, watchEffect, reactive } from "vue";
 import { useStore } from "vuex";
 export default {
-  name: "Deposit",
+  name: "Withdraw",
   components: {
     Layout,
     VueTable,
@@ -152,24 +152,24 @@ export default {
       user_id: "",
       nominal: "",
     });
-    const data = computed(() => store.getters["deposit/getData"]);
-    const dataUsers = computed(() => store.state.deposit.users);
+    const data = computed(() => store.getters["withdraw/getData"]);
+    const dataUsers = computed(() => store.state.withdraw.users);
 
-    const validate = computed(() => store.getters["deposit/getValidate"]);
+    const validate = computed(() => store.getters["withdraw/getValidate"]);
     const searchData = (e) => getData(1, e.target.value);
-    const getUser = () => store.dispatch("deposit/handleUsers");
+    const getUser = () => store.dispatch("withdraw/handleUsers");
     const getData = (page = 1, search = "") => {
-      store.dispatch("deposit/handleGetData", { page, search });
+      store.dispatch("withdraw/handleGetData", { page, search });
     };
     const deleteData = (id) => {
-      store.dispatch("deposit/handleDelete", id);
+      store.dispatch("withdraw/handleDelete", id);
       getData();
     };
     const handleSubmit = () => {
       const formData = new FormData();
       formData.append("user_id", saved.user_id);
       formData.append("nominal", saved.nominal);
-      store.dispatch("deposit/handleSave", formData);
+      store.dispatch("withdraw/handleSave", formData);
       saved.user_id = "";
       saved.nominal = "";
       getData();

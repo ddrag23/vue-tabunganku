@@ -13,4 +13,5 @@ const bearerToken = `Bearer ${token}`
 axios.defaults.withCredentials = true
 axios.defaults.baseURL = 'http://localhost:8000'
 axios.defaults.headers.common['Authorization'] = token ? bearerToken : ''
+
 createApp(App).use(router).use(store).mount('#app')

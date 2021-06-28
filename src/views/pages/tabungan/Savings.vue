@@ -40,7 +40,10 @@
                   </tr>
                 </template>
                 <template v-slot:tbody>
-                  <tr v-for="(item, index) in data.data" :key="item.id">
+                  <tr v-if="data.data.lenght < 0">
+                    <td colspan="4" class="text-center">Belum ada data</td>
+                  </tr>
+                  <tr v-else v-for="(item, index) in data.data" :key="item.id">
                     <td>
                       {{ (data.current_page - 1) * data.per_page + index + 1 }}
                     </td>

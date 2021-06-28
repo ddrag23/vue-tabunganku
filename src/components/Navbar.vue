@@ -60,20 +60,14 @@
 </template>
 <script>
 import Sidebar from "./Sidebar.vue";
-import axios from "axios";
 export default {
-  data() {
-    return {
-      token: localStorage.getItem("token"),
-    };
-  },
   name: "Navbar",
   components: {
     Sidebar,
   },
   methods: {
     logout() {
-      this.$store.dispatch("auth/handleLogout", this.token);
+      this.$store.dispatch("auth/handleLogout");
     },
   },
 };

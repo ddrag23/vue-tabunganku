@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/pages/Home.vue'
 import Deposit from '../views/pages/tabungan/Deposit.vue'
+import Withdraw from '@/views/pages/tabungan/Withdraw.vue'
 import Savings from '../views/pages/tabungan/Savings.vue'
 import PageNotFound from '../views/errors/NotFound.vue'
 import Login from '../views/pages/auth/Login.vue'
@@ -13,7 +14,7 @@ const routes = [
     component: Login,
     meta: {
       title: 'Login',
-      requiredAuth : false,
+      requiredAuth: false,
     },
   },
   {
@@ -22,7 +23,7 @@ const routes = [
     component: Home,
     meta: {
       title: 'Home',
-      requiredAuth : true,
+      requiredAuth: true,
     },
   },
   {
@@ -31,7 +32,16 @@ const routes = [
     component: Deposit,
     meta: {
       title: 'Deposit',
-      requiredAuth : true,
+      requiredAuth: true,
+    },
+  },
+  {
+    path: '/tabungan/withdraw',
+    name: 'withdraw',
+    component: Withdraw,
+    meta: {
+      title: 'Withdraw',
+      requiredAuth: true,
     },
   },
   {
@@ -40,7 +50,7 @@ const routes = [
     component: Savings,
     meta: {
       title: 'Tabungan',
-      requiredAuth : true,
+      requiredAuth: true,
     },
   },
   {
@@ -69,15 +79,15 @@ router.beforeEach((to, from, next) => {
   document.title = `${to.meta.title}`
   next()
 })
-router.beforeEach((to,from, next) => {
+router.beforeEach((to, from, next) => {
   if (to.meta.requiredAuth) {
-      const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token')
     if (!token) {
-      next({name:'login'})
-    }else{
+      next({ name: 'login' })
+    } else {
       next()
     }
-  }else{
+  } else {
     next()
   }
 })
