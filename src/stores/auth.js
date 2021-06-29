@@ -1,10 +1,10 @@
 import axios from 'axios'
+import Swal from 'sweetalert2'
 import router from '../router'
 
 export default {
   namespaced: true,
   state: {
-    user: {},
     validate: {},
     invalidUser: '',
   },
@@ -39,7 +39,7 @@ export default {
               if (res.data.success) {
                 localStorage.setItem('token', res.data.token)
                 localStorage.setItem('isLoggedIn', true)
-                commit('setUser', res.data.data)
+                localStorage.setItem('user', JSON.stringify(res.data.user))
                 router.push({ name: 'Home' })
               } else {
                 if (res.data.errors !== undefined) {
@@ -53,6 +53,26 @@ export default {
             .catch((e) => console.error(e))
         })
         .catch((e) => console.error(e))
+    },
+    async handleStoreProfile({ commit }, formData) {
+      try {
+        const res = await axios.post('/api/profile', formData)
+        const data = await res.data
+        console.log(res)
+        if (data.success) {
+          localStorage.setItem('user', JSON.stringify(data.data))
+          Swal.fire(data.message, '', 'success')
+        } else {
+          if (data.errors !== undefined) {
+            commit('setValidate', res.data.errors)
+            commit('setInvalidUser', res.data.message)
+          } else {
+            commit('setInvalidUser', res.data.message)
+          }
+        }
+      } catch (error) {
+        console.error(error)
+      }
     },
     handleLogout({}) {
       axios
