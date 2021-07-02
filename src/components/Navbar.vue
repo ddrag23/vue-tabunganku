@@ -10,7 +10,7 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <a class="navbar-brand me-auto" :to="{ name: 'Home' }">Navbar</a>
+      <a class="navbar-brand me-auto" :to="{ name: 'Dashboard' }">Navbar</a>
       <button
         class="navbar-toggler"
         type="button"

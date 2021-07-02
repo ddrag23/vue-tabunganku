@@ -11,12 +11,7 @@ table tr td {
         <card>
           <template v-slot:card-body>
             <div class="d-flex justify-content-center">
-              <img
-                :src="'http://localhost:8000/public/storage/' + data.photo"
-                class="img-fluid"
-                alt=""
-                style="width: 80px"
-              />
+              <img :src="photo" class="img-fluid" alt="" style="width: 80px" />
             </div>
             <ul class="list-group list-group-flush">
               <li class="list-group-item">
@@ -93,7 +88,8 @@ table tr td {
 import Layout from "@/views/pages/Layout.vue";
 import Card from "@/components/Card.vue";
 import { useStore } from "vuex";
-import { reactive, ref } from "vue";
+import { reactive, ref, onMounted } from "vue";
+import axios from "axios";
 export default {
   name: "profile",
   components: {
@@ -106,10 +102,20 @@ export default {
       email: "",
     });
     const file = ref("");
+    const photo = ref("");
     const store = useStore();
     const data = JSON.parse(localStorage.getItem("user"));
     saved.name = data.name;
     saved.email = data.email;
+    const getPhoto = async () => {
+      const res = await axios.get(`/api/profile/photo/${data.id}`, {
+        headers: {
+          "Content-Type": "image/*",
+        },
+      });
+      const json = await res.data;
+      photo.value = json;
+    };
     const handleSave = () => {
       console.log("ok");
       const formData = new FormData();
@@ -117,17 +123,18 @@ export default {
       formData.append("email", saved.email);
       formData.append("photo", file.value.files[0]);
       store.dispatch("auth/handleStoreProfile", formData);
+      getPhoto();
     };
-    const checkPhoto = () =>
-      data.photo !== null
-        ? `http://localhost:8000/tabunganku/public/storage/${data.photo}`
-        : "@/asset/logo.png";
+
+    onMounted(() => {
+      getPhoto();
+    });
     return {
       data,
       file,
       saved,
       handleSave,
-      checkPhoto,
+      photo,
     };
   },
 };

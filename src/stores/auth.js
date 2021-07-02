@@ -40,7 +40,12 @@ export default {
                 localStorage.setItem('token', res.data.token)
                 localStorage.setItem('isLoggedIn', true)
                 localStorage.setItem('user', JSON.stringify(res.data.user))
-                router.push({ name: 'Home' })
+                const { role } = res.data.user
+                if (role === 'admin') {
+                  router.push({ name: 'Dashboard' })
+                } else {
+                  router.push({ name: 'home' })
+                }
               } else {
                 if (res.data.errors !== undefined) {
                   commit('setValidate', res.data.errors)
@@ -56,7 +61,7 @@ export default {
     },
     async handleStoreProfile({ commit }, formData) {
       try {
-        const res = await axios.post('/api/profile', formData)
+        const res = await axios.post('/api/profile/save', formData)
         const data = await res.data
         console.log(res)
         if (data.success) {

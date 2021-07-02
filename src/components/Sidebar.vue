@@ -24,18 +24,26 @@
           <li>
             <div class="text-muted small fw-bold text-uppercase px-3">Core</div>
           </li>
-          <li>
-            <router-link :to="{ name: 'Home' }" class="nav-link px-3">
+          <li v-if="user.role === 'admin'">
+            <router-link :to="{ name: 'Dashboard' }" class="nav-link px-3">
               <span class="me-2">
                 <i class="bi bi-speedometer2"></i>
               </span>
               <span>Dashboard</span>
             </router-link>
           </li>
+          <li v-else>
+            <router-link :to="{ name: 'home' }" class="nav-link px-3">
+              <span class="me-2">
+                <i class="bi bi-house-door"></i>
+              </span>
+              <span>Home</span>
+            </router-link>
+          </li>
           <li>
             <hr class="dropdown-divider" />
           </li>
-          <li>
+          <li v-if="user.role === 'admin'">
             <a
               class="nav-link px-3 sidebar-link"
               data-bs-toggle="collapse"
@@ -92,6 +100,11 @@
 <script>
 export default {
   name: "Sidebar",
+  data: () => {
+    return {
+      user: JSON.parse(localStorage.getItem("user")),
+    };
+  },
   methods: {
     isActive(input) {
       const paths = Array.isArray(input) ? input : [input];
@@ -99,6 +112,7 @@ export default {
         return this.$route.path.indexOf(path) === 0; // current path starts with this path string
       });
     },
+    textDashboard: () => (this.user.role === "admin" ? "Dashboard" : "Home"),
   },
 };
 </script>
