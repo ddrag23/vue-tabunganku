@@ -7,7 +7,7 @@
   display: inline-flex;
   transition: all ease 0.25s;
 }
-.sidebar-link[aria-expanded="true"] .right-icon {
+.sidebar-link[aria-expanded='true'] .right-icon {
   transform: rotate(180deg);
 }
 </style>
@@ -92,6 +92,14 @@
               </div>
             </div>
           </li>
+          <li v-if="user.role === 'admin'">
+            <router-link :to="{ name: 'user' }" class="nav-link px-3">
+              <span class="me-2">
+                <i class="bi bi-people"></i>
+              </span>
+              <span>User</span>
+            </router-link>
+          </li>
         </ul>
       </nav>
     </div>
@@ -99,10 +107,10 @@
 </template>
 <script>
 export default {
-  name: "Sidebar",
+  name: 'Sidebar',
   data: () => {
     return {
-      user: JSON.parse(localStorage.getItem("user")),
+      user: JSON.parse(localStorage.getItem('user')),
     };
   },
   methods: {
@@ -112,7 +120,7 @@ export default {
         return this.$route.path.indexOf(path) === 0; // current path starts with this path string
       });
     },
-    textDashboard: () => (this.user.role === "admin" ? "Dashboard" : "Home"),
+    textDashboard: () => (this.user.role === 'admin' ? 'Dashboard' : 'Home'),
   },
 };
 </script>

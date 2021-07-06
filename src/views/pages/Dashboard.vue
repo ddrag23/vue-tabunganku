@@ -1,6 +1,6 @@
 <template>
   <layout>
-    <h4>Ini halaman home</h4>
+    <h4>Ini halaman Dashboard</h4>
     <div class="card">
       <div class="card-header">
         <div class="card-title">OK</div>

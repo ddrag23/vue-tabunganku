@@ -1,13 +1,14 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import Dashboard from '../views/pages/Dashboard.vue'
-import Home from '../views/pages/Home.vue'
-import Deposit from '../views/pages/tabungan/Deposit.vue'
-import Withdraw from '@/views/pages/tabungan/Withdraw.vue'
-import Profile from '@/views/pages/auth/Profile.vue'
-import Savings from '../views/pages/tabungan/Savings.vue'
-import PageNotFound from '../views/errors/NotFound.vue'
-import Login from '../views/pages/auth/Login.vue'
-import Unauthorized from '../views/errors/Unauthorized.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import Dashboard from '../views/pages/Dashboard.vue';
+import Home from '../views/pages/Home.vue';
+import User from '@/views/pages/user/User.vue';
+import Deposit from '../views/pages/tabungan/Deposit.vue';
+import Withdraw from '@/views/pages/tabungan/Withdraw.vue';
+import Profile from '@/views/pages/auth/Profile.vue';
+import Savings from '../views/pages/tabungan/Savings.vue';
+import PageNotFound from '../views/errors/NotFound.vue';
+import Login from '../views/pages/auth/Login.vue';
+import Unauthorized from '../views/errors/Unauthorized.vue';
 
 const routes = [
   {
@@ -80,6 +81,16 @@ const routes = [
     },
   },
   {
+    path: '/user',
+    name: 'user',
+    component: User,
+    meta: {
+      title: 'User',
+      requiredAuth: true,
+      requiredAdmin: true,
+    },
+  },
+  {
     path: '/unauthorized',
     name: 'unauthorized',
     component: Unauthorized,
@@ -94,36 +105,36 @@ const routes = [
       title: '404 Not Found',
     },
   },
-]
+];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
   linkActiveClass: 'active',
-})
+});
 router.beforeEach((to, from, next) => {
-  document.title = `${to.meta.title}`
-  next()
-})
+  document.title = `${to.meta.title}`;
+  next();
+});
 router.beforeEach((to, from, next) => {
   if (to.meta.requiredAuth) {
-    const token = localStorage.getItem('token')
-    const { role } = JSON.parse(localStorage.getItem('user'))
+    const token = localStorage.getItem('token');
+    const { role } = JSON.parse(localStorage.getItem('user'));
     if (!token) {
-      next({ name: 'login' })
+      next({ name: 'login' });
     } else {
       if (to.meta.requiredAdmin) {
         if (role === 'admin') {
-          next()
+          next();
         } else {
-          next({ name: 'unauthorized' })
+          next({ name: 'unauthorized' });
         }
       } else {
-        next()
+        next();
       }
     }
   } else {
-    next()
+    next();
   }
-})
-export default router
+});
+export default router;

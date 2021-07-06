@@ -10,7 +10,9 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <a class="navbar-brand me-auto" :to="{ name: 'Dashboard' }">Navbar</a>
+      <a class="navbar-brand me-auto" :to="{ name: 'Dashboard' }"
+        >Tabungan Kita</a
+      >
       <button
         class="navbar-toggler"
         type="button"
@@ -65,15 +67,15 @@
   <sidebar></sidebar>
 </template>
 <script>
-import Sidebar from "./Sidebar.vue";
+import Sidebar from './Sidebar.vue';
 export default {
-  name: "Navbar",
+  name: 'Navbar',
   components: {
     Sidebar,
   },
   methods: {
     logout() {
-      this.$store.dispatch("auth/handleLogout");
+      this.$store.dispatch('auth/handleLogout');
     },
   },
 };

@@ -6,7 +6,7 @@
 <template>
   <div
     class="wrap row d-flex justify-content-center align-items-center"
-    style="height: 100vh"
+    style="height: 100vh;"
   >
     <div class="col-lg-4 col-md-6">
       <div class="card shadow-sm">
@@ -62,27 +62,38 @@
   </div>
 </template>
 <script>
-import { reactive, onMounted, computed } from "vue";
-import { useRouter } from "vue-router";
-import { useStore } from "vuex";
+import { reactive, onMounted, computed } from 'vue';
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 export default {
   setup() {
     const router = useRouter();
     const store = useStore();
     const data = reactive({
-      username: "",
-      password: "",
+      username: '',
+      password: '',
     });
-    const validate = computed(() => store.getters["auth/getValidate"]);
-    const invalidUser = computed(() => store.getters["auth/getInvalidUser"]);
+    const validate = computed(() => store.getters['auth/getValidate']);
+    const invalidUser = computed(() => store.getters['auth/getInvalidUser']);
     // console.log(validate);
     const submit = () => {
-      store.dispatch("auth/handleLogin", data);
+      store.dispatch('auth/handleLogin', data);
       // router.push({ name: "Home" });
     };
     onMounted(() => {
-      if (localStorage.getItem("isLoggedIn") === "true") {
-        return router.push("/home");
+      if (localStorage.getItem('isLoggedIn') === 'true') {
+        const { role } = JSON.parse(localStorage.getItem('user'));
+        switch (role) {
+          case 'admin':
+            router.push('/dashboard');
+            break;
+          case 'user':
+            router.push('/home');
+            break;
+          default:
+            router.push('/login');
+            break;
+        }
       }
     });
     return {

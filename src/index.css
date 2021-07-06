@@ -17,6 +17,10 @@
 .card-outline-primary {
   border-top: 1px solid blue;
 }
+.header-title{
+  color: black;
+  font-size: 1rem;
+}
 
 @media (min-width: 992px) {
   body {
