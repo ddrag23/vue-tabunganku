@@ -103,6 +103,26 @@
                     {{ validate.notelp[0] }}
                   </div>
                 </div>
+                <div class="col-md-6 col-sm-12" v-if="isEdit">
+                  <label for="form-label">Password</label>
+                  <input
+                    type="password"
+                    v-model="saved.password"
+                    class="form-control"
+                    :class="{ 'is-invalid': validate.password !== undefined }"
+                  />
+                  <div v-if="validate.password" class="invalid-feedback">
+                    {{ validate.password[0] }}
+                  </div>
+                </div>
+                <div class="col-md-6 col-sm-12" v-if="isEdit">
+                  <label for="form-label">Password Confirmation</label>
+                  <input
+                    type="password"
+                    v-model="saved.password_confirmation"
+                    class="form-control"
+                  />
+                </div>
                 <div class="col-12">
                   <label for="form-label">Alamat</label>
                   <textarea
@@ -216,7 +236,7 @@ import Layout from "../Layout.vue";
 import VueTable from "@/components/Table.vue";
 import Card from "@/components/Card.vue";
 import VuePagination from "@/components/VuePagination.vue";
-import { onMounted, computed, watchEffect, reactive } from "vue";
+import { onMounted, computed, watchEffect, reactive, ref } from "vue";
 import { useStore } from "vuex";
 export default {
   name: "Deposit",
@@ -237,8 +257,10 @@ export default {
       alamat: "",
       role: "",
       password: "",
+      password_confirmation: "",
       id: "",
     });
+    const isEdit = ref(false);
     const data = computed(() => store.getters["user/getData"]);
 
     const validate = computed(() => store.getters["user/getValidate"]);
@@ -252,21 +274,27 @@ export default {
     };
     const handleSubmit = async () => {
       const formData = new FormData();
-      Object.entries(saved).map(([key, value]) => formData.append(key, value));
-      // formData.append("user_id", saved.user_id);
+      Object.entries(saved)
+        .filter(([key]) => key !== "password")
+        .map(([key, value]) => formData.append(key, value));
+      formData.append("password", saved.password);
       // formData.append("nominal", saved.nominal);
       await store.dispatch("user/handleSave", formData);
       for (const key in saved) {
         saved[key] = "";
       }
+      isEdit.value = false;
       await getData();
     };
     const handleEdit = async (id) => {
+      isEdit.value = true;
       await store.dispatch("user/handleEdit", id);
       const show = store.getters["user/getSingleData"];
-      console.log(show);
+      const notAllowed = ["password", "password_confirmation"];
       for (const key in saved) {
-        saved[key] = show[key];
+        if (!notAllowed.includes(key)) {
+          saved[key] = show[key];
+        }
       }
       // saved.name = show.name;
     };
@@ -283,6 +311,7 @@ export default {
       deleteData,
       handleSubmit,
       handleEdit,
+      isEdit,
       saved,
       validate,
     };
