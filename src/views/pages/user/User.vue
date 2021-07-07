@@ -186,7 +186,7 @@
                 </template>
                 <template v-slot:tbody>
                   <tr v-if="data.data === undefined">
-                    <td colspan="4" class="text-center">Belum ada data</td>
+                    <td colspan="6" class="text-center">Belum ada data</td>
                   </tr>
                   <tr v-else v-for="(item, index) in data.data" :key="item.id">
                     <td>
@@ -204,12 +204,12 @@
                       >
                         <i class="bi bi-pencil"></i>
                       </a>
-                      <button
+                      <router-link
+                        :to="{ name: 'user.detail', params: { id: item.id } }"
                         class="btn btn-info me-1 btn-sm"
-                        @click="deleteData(item.id)"
                       >
                         <i class="bi bi-eye"></i>
-                      </button>
+                      </router-link>
                       <button
                         class="btn btn-danger btn-sm"
                         @click="deleteData(item.id)"
