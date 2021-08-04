@@ -85,7 +85,7 @@ export default {
         const { role } = JSON.parse(localStorage.getItem('user'));
         switch (role) {
           case 'admin':
-            router.push('/dashboard');
+            router.replace('/dashboard');
             break;
           case 'user':
             router.push('/home');

@@ -1,6 +1,6 @@
-import axios from 'axios'
-import Swal from 'sweetalert2'
-import router from '../router'
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import router from '../router';
 
 export default {
   namespaced: true,
@@ -14,21 +14,21 @@ export default {
   },
   mutations: {
     setUser(state, value) {
-      state.user = value
+      state.user = value;
     },
     setValidate(state, value) {
-      state.validate = value
+      state.validate = value;
     },
     setInvalidUser(state, value) {
-      state.invalidUser = value
+      state.invalidUser = value;
     },
   },
   actions: {
-    handleLogin({ commit }, user) {
+    handleLogin({commit}, user) {
       axios
         .get('/sanctum/csrf-cookie')
         .then((res) => {
-          console.log(res)
+          console.log(res);
           axios
             .post('/api/login', {
               username: user.username,
@@ -37,60 +37,60 @@ export default {
             .then((res) => {
               //   console.log(res);
               if (res.data.success) {
-                localStorage.setItem('token', res.data.token)
-                localStorage.setItem('isLoggedIn', true)
-                localStorage.setItem('user', JSON.stringify(res.data.user))
-                const { role } = res.data.user
+                localStorage.setItem('token', res.data.token);
+                localStorage.setItem('isLoggedIn', true);
+                localStorage.setItem('user', JSON.stringify(res.data.user));
+                const {role} = res.data.user;
                 if (role === 'admin') {
-                  router.push({ name: 'Dashboard' })
+                  window.location.replace('/dashboard');
                 } else {
-                  router.push({ name: 'home' })
+                  window.location.replace('/home');
                 }
               } else {
                 if (res.data.errors !== undefined) {
-                  commit('setValidate', res.data.errors)
-                  commit('setInvalidUser', res.data.message)
+                  commit('setValidate', res.data.errors);
+                  commit('setInvalidUser', res.data.message);
                 } else {
-                  commit('setInvalidUser', res.data.message)
+                  commit('setInvalidUser', res.data.message);
                 }
               }
             })
-            .catch((e) => console.error(e))
+            .catch((e) => console.error(e));
         })
-        .catch((e) => console.error(e))
+        .catch((e) => console.error(e));
     },
-    async handleStoreProfile({ commit }, formData) {
+    async handleStoreProfile({commit}, formData) {
       try {
-        const res = await axios.post('/api/profile/save', formData)
-        const data = await res.data
-        console.log(res)
+        const res = await axios.post('/api/profile/save', formData);
+        const data = await res.data;
+        console.log(res);
         if (data.success) {
-          localStorage.setItem('user', JSON.stringify(data.data))
-          Swal.fire(data.message, '', 'success')
+          localStorage.setItem('user', JSON.stringify(data.data));
+          Swal.fire(data.message, '', 'success');
         } else {
           if (data.errors !== undefined) {
-            commit('setValidate', res.data.errors)
-            commit('setInvalidUser', res.data.message)
+            commit('setValidate', res.data.errors);
+            commit('setInvalidUser', res.data.message);
           } else {
-            commit('setInvalidUser', res.data.message)
+            commit('setInvalidUser', res.data.message);
           }
         }
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     },
     handleLogout({}) {
       axios
         .get('/api/logout')
         .then((res) => {
-          localStorage.clear()
-          router.push({ name: 'login' })
+          localStorage.clear();
+          window.location.replace('/');
         })
         .catch((e) => {
-          localStorage.clear()
-          router.push({ name: 'login' })
-          console.error(e)
-        })
+          localStorage.clear();
+          window.location.replace('/');
+          console.error(e);
+        });
     },
   },
-}
+};
